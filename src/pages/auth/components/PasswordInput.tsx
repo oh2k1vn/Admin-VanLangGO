@@ -27,21 +27,25 @@ function getStrength(password: string) {
 
   requirements.forEach((requirement) => {
     if (!requirement.re.test(password)) {
-      multiplier += 1;
+      multiplier += 1;  
     }
   });
 
   return Math.max(100 - (100 / (requirements.length + 1)) * multiplier, 10);
 }
 
-export function PasswordInput() {
+export function PasswordInput(props: any) {
+  const { setPassword, password } = props;
   const [popoverOpened, setPopoverOpened] = useState(false);
-  const [value, setValue] = useState('');
   const checks = requirements.map((requirement, index) => (
-    <PasswordRequirement key={index} label={requirement.label} meets={requirement.re.test(value)} />
+    <PasswordRequirement
+      key={index}
+      label={requirement.label}
+      meets={requirement.re.test(password)}
+    />
   ));
 
-  const strength = getStrength(value);
+  const strength = getStrength(password);
   const color = strength === 100 ? 'teal' : strength > 50 ? 'yellow' : 'red';
 
   return (
@@ -57,14 +61,14 @@ export function PasswordInput() {
               required
               label='Mật khẩu của bạn'
               placeholder='Mật khẩu của bạn'
-              value={value}
-              onChange={(event) => setValue(event.currentTarget.value)}
+              value={password}
+              onChange={(event) => setPassword(event.currentTarget.value)}
             />
           </div>
         </Popover.Target>
         <Popover.Dropdown>
           <Progress color={color} value={strength} size={5} style={{ marginBottom: 10 }} />
-          <PasswordRequirement label='Bao gồm ít nhất 6 ký tự' meets={value.length > 5} />
+          <PasswordRequirement label='Bao gồm ít nhất 6 ký tự' meets={password.length > 5} />
           {checks}
         </Popover.Dropdown>
       </Popover>

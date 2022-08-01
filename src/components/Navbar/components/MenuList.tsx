@@ -26,7 +26,7 @@ const data = [
   },
 ];
 
-export function MenuList() {
+export function MenuList(props: any) {
   const [active, setActive] = React.useState(0);
   const items = data.map((item, index) => (
     <NavLink
@@ -35,26 +35,15 @@ export function MenuList() {
       to={item.label}
       key={item.label}
       active={index === active}
-      label={item.label}
+      label={props.open && item.label}
       description={item.description}
       rightSection={item.rightSection}
       icon={<item.icon size={16} />}
       onClick={() => setActive(index)}
       className='rounded-lg'
-    >
-      {/* {item?.nav((nav: any, index: number) => (
-        <NavLink
-          key={nav?.label}
-          active={index === active}
-          label={nav?.label}
-          description={nav?.description}
-          rightSection={nav?.rightSection}
-          icon={<nav.icon size={16} />}
-          onClick={() => setActive(index)}
-        />
-      ))} */}
-    </NavLink>
+    ></NavLink>
   ));
+  console.log(location);
 
   return (
     <Navbar.Section grow component={ScrollArea} className='overflow-x-hidden' mx='-xs' px='xs'>
